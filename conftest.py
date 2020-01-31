@@ -3,7 +3,6 @@ from fixture.application import Application  # group.py - package group, Group -
 import json
 import os.path
 import pytest
-import importlib
 
 
 fixture = None

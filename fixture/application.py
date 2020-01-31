@@ -1,6 +1,6 @@
 from selenium import webdriver
 from fixture.session import SessionHelper
-
+from fixture.project import ProjectHelper
 
 
 class Application:
@@ -16,6 +16,7 @@ class Application:
         # initialize wd variable
         self.wd.implicitly_wait(5)  # not delete because tests are failed
         self.session = SessionHelper(self)  # link to SessionHelper
+        self.project = ProjectHelper(self)
         self.base_url = base_url
 
     def is_valid(self):

@@ -1,0 +1,57 @@
+from selenium.webdriver.support.select import Select
+
+from model.project import Project
+
+
+class ProjectHelper:
+    def __init__(self, app):
+        self.app = app
+
+    def add_project(self, project):
+        wd = self.app.wd
+        self.open_create_page()
+        self.fill_form(project)
+        wd.find_element_by_xpath("//input[@value='Add Project']").click()
+        self.open_manage_page()
+
+    def open_manage_page(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("Manage Projects").click()
+
+    def change_each_form(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            try:
+                wd.find_element_by_name(field_name).click()
+                wd.find_element_by_name(field_name).clear()
+                wd.find_element_by_name(field_name).send_keys(text)
+            except:
+                Select(wd.find_element_by_name(field_name)).select_by_visible_text(text)
+
+    def fill_form(self, project):
+        self.change_each_form("name", project.name)
+        self.change_each_form("status", project.status)
+        self.change_each_form("view_state", project.view_state)
+        self.change_each_form("description", project.description)
+
+    def open_create_page(self):
+        wd = self.app.wd
+        if not (wd.current_url.endswith("manage_proj_create_page.php")):
+            wd.get("http://localhost/mantisbt-1.2.20/manage_proj_create_page.php")
+
+    project_cache = None
+
+    def get_list(self):
+        if self.project_cache is None:
+            wd = self.app.wd
+            self.open_manage_page()
+            self.project_cache = []
+            for element in wd.find_elements_by_name("row-."):
+                graphs = element.find_elements_by_tag_name("td")
+                name = graphs[0].text
+                status = graphs[1].text
+                view_state = graphs[3].text
+                description = graphs[4].text
+                self.project_cache.append(Project(name=name, status=status, view_state=view_state,
+                                                  description=description))
+        return list(self.project_cache)
