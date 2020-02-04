@@ -1,7 +1,8 @@
 from model.project import Project
 
-new_project = Project(name="new_pr", status="new_st", view_state="new_state", description="new_descr")
 
+new_project = Project(name="New Project",
+                             description="Project Description")
 
 def test_add_project(app):
     global new_project

@@ -13,10 +13,12 @@ class ProjectHelper:
         self.fill_form(project)
         wd.find_element_by_xpath("//input[@value='Add Project']").click()
         self.open_manage_page()
+        self.project_cache = None
 
     def open_manage_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("Manage Projects").click()
+        if not (wd.current_url.endswith("manage_proj_page.php")):
+            wd.get("http://localhost/mantisbt-1.2.20/manage_proj_page.php")
 
     def change_each_form(self, field_name, text):
         wd = self.app.wd
@@ -42,11 +44,11 @@ class ProjectHelper:
     project_cache = None
 
     def get_list(self):
+        wd = self.app.wd
         if self.project_cache is None:
-            wd = self.app.wd
             self.open_manage_page()
             self.project_cache = []
-            for element in wd.find_elements_by_name("row-."):
+            for element in wd.find_elements_by_xpath("//div[2]/table/tbody/tr"):
                 graphs = element.find_elements_by_tag_name("td")
                 name = graphs[0].text
                 status = graphs[1].text
@@ -55,3 +57,4 @@ class ProjectHelper:
                 self.project_cache.append(Project(name=name, status=status, view_state=view_state,
                                                   description=description))
         return list(self.project_cache)
+
