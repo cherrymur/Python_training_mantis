@@ -12,6 +12,9 @@ class ProjectHelper:
         self.open_create_page()
         self.fill_form(project)
         wd.find_element_by_xpath("//input[@value='Add Project']").click()
+        if wd.find_element_by_xpath("//div[2]/table/tbody/tr").text == "APPLICATION ERROR #701":
+            self.open_create_page()
+            self.fill_form(project)
         self.open_manage_page()
         self.project_cache = None
 
@@ -48,7 +51,9 @@ class ProjectHelper:
         if self.project_cache is None:
             self.open_manage_page()
             self.project_cache = []
-            for element in wd.find_elements_by_xpath("//div[2]/table/tbody/tr"):
+            elements = wd.find_elements_by_css_selector("tr.row-1")
+            elements += wd.find_elements_by_css_selector("tr.row-2")
+            for element in elements:
                 graphs = element.find_elements_by_tag_name("td")
                 name = graphs[0].text
                 status = graphs[1].text
