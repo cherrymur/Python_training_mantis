@@ -56,10 +56,23 @@ class ProjectHelper:
                 status = graphs[1].text
                 view_state = graphs[3].text
                 description = graphs[4].text
-                id_link = wd.find_element_by_partial_link_text(name).get_attribute("href")
+                id_link = wd.find_element_by_link_text(name).get_attribute("href")
                 id_index = id_link.index('=') + 1
                 id = id_link[id_index:]
                 self.project_cache.append(Project(id=id, name=name, status=status, view_state=view_state,
                                                   description=description))
         return list(self.project_cache)
+
+    def remove_project_by_id(self, id):
+        wd = self.app.wd
+        self.open_manage_page()
+        self.open_to_edit_by_id(id)
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
+        self.project_cache = None
+
+
+    def open_to_edit_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("a[href='manage_proj_edit_page.php?project_id=%s']" % id).click()
 
