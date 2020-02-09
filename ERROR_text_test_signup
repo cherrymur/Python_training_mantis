@@ -1,0 +1,44 @@
+test_signup.py::test_signup_new_account FAILED                           [100%]
+test_signup.py:9 (test_signup_new_account)
+app = <fixture.application.Application object at 0x03F00E80>
+
+    def test_signup_new_account(app):
+        username = random_username("user_", 10)
+        email = username + "@localhost"
+        password = "test"
+        app.james.ensure_user_exists(username, password)
+>       app.signup.new_user(username, email, password)
+
+test_signup.py:15:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\fixture\signup.py:16: in new_user
+    url = self.extract_confirmation_url(mail)
+..\fixture\signup.py:25: in extract_confirmation_url
+    return re.search("http://.*$", text, re.MULTILINE).group(0)  # $ - end of string
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pattern = 'http://.*$', string = None, flags = re.MULTILINE
+
+    def search(pattern, string, flags=0):
+        """Scan through string looking for a match to the pattern, returning
+        a Match object, or None if no match was found."""
+>       return _compile(pattern, flags).search(string)
+E       TypeError: expected string or bytes-like object
+
+..\env\lib\re.py:199: TypeError
+
+============================== warnings summary ===============================
+test_signup.py::test_signup_new_account
+  C:\Users\olga.avramenko\PycharmProjects\Python_training_mantis\conftest.py:45: DeprecationWarning: `use_list_a_option` will default to `False` in ftputil 4.x.x
+    with ftputil.FTPHost(host, username, password) as remote:
+
+test_signup.py::test_signup_new_account
+  C:\Users\olga.avramenko\PycharmProjects\Python_training_mantis\env\lib\site-packages\ftputil\host.py:148: DeprecationWarning: `use_list_a_option` will default to `False` in ftputil 4.x.x
+    return self.__class__(*self._args, **self._kwargs)
+
+test_signup.py::test_signup_new_account
+  C:\Users\olga.avramenko\PycharmProjects\Python_training_mantis\conftest.py:54: DeprecationWarning: `use_list_a_option` will default to `False` in ftputil 4.x.x
+    with ftputil.FTPHost(host, username, password) as remote:
+
+-- Docs: https://docs.pytest.org/en/latest/warnings.html
+======================= 1 failed, 3 warnings in 33.16s ========================
