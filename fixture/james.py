@@ -22,7 +22,7 @@ class JamesHelper:
         def __init__(self, host, port, username, password): # доступ к почтовому серверу
             self.telnet = Telnet(host, port, 5)
             self.read_until("Login id:")
-            self.write(username + '\n')
+            self.write(username + '\n') # it's very important to have \ slash, not /
             self.read_until("Password:")
             self.write(password + '\n')
             self.read_until("Welcome root. HELP for a list of commands")
