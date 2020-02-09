@@ -76,3 +76,19 @@ class ProjectHelper:
         wd = self.app.wd
         wd.find_element_by_css_selector("a[href='manage_proj_edit_page.php?project_id=%s']" % id).click()
 
+
+    def get_list_id(self):
+        wd = self.app.wd
+        if self.project_cache is None:
+            self.open_manage_page()
+            self.project_cache = []
+            elements = wd.find_elements_by_css_selector("table.width100 tr.row-1")
+            elements += wd.find_elements_by_css_selector("table.width100 tr.row-2")
+            for element in elements:
+                graphs = element.find_elements_by_tag_name('td')
+                name = graphs[0].text
+                id_link = wd.find_element_by_link_text(name).get_attribute("href")
+                id_index = id_link.index('=') + 1
+                id = id_link[id_index:]
+                self.project_cache.append(Project(id=id))
+        return list(self.project_cache)
