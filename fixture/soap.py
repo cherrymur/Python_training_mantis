@@ -2,8 +2,7 @@
 from suds.client import Client
 from suds import WebFault
 from model.project import Project
-import random
-import string
+
 
 
 class SoapHelper:
@@ -20,7 +19,7 @@ class SoapHelper:
             return False
 
     def get_info_link(self):
-        return Client("http://localhost/mantisbt-1.2.20/api/soap/mantisconnect.php?wsdl")
+        return Client(self.app.config['web']['baseUrl'] + "api/soap/mantisconnect.php?wsdl")
 
     def get_list(self, username, password):
         client = self.get_info_link()
