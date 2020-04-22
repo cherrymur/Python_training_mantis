@@ -6,7 +6,7 @@ import pytest
 import ftputil
 
 
-fixture = None
+# fixture = None
 target = None
 
 
